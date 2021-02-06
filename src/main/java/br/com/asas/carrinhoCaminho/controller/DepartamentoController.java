@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 
@@ -56,5 +57,12 @@ public class DepartamentoController {
             return ResponseEntity.ok("Problema com banco de dados");
         }
     }
-    
+
+    private Departamento buscaPorId(Integer codigo) throws DepartamentoException {
+        Optional<Departamento> departamento = departamentoService.buscaPorCodigo(codigo);
+        if(departamento.isPresent()) {
+            return departamento.get();
+        }
+        return null;
+    }
 }

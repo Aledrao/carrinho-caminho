@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DepartamentoServiceImpl implements DepartamentoService {
@@ -32,6 +33,24 @@ public class DepartamentoServiceImpl implements DepartamentoService {
             return departamentos;
         } catch (Exception e) {
             throw new DepartamentoException("Erro ao buscar todos os departamento", e);
+        }
+    }
+
+    @Override
+    public Optional<Departamento> buscaPorCodigo(Integer codigo) throws DepartamentoException {
+        try {
+            return departamentoRepository.findById(codigo);
+        } catch (Exception e) {
+            throw new DepartamentoException("Erro ao buscar departamento", e);
+        }
+    }
+
+    @Override
+    public void excluir(Integer codigo) throws DepartamentoException {
+        try {
+            departamentoRepository.deleteById(codigo);
+        } catch (Exception e) {
+            throw new DepartamentoException("Erro ao excluir departamento", e);
         }
     }
 }
