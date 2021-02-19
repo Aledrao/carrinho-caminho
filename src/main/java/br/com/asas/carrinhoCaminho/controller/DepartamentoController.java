@@ -5,11 +5,7 @@ import br.com.asas.carrinhoCaminho.service.serviceImpl.DepartamentoServiceImpl;
 import br.com.asas.carrinhoCaminho.model.Departamento;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -53,6 +49,21 @@ public class DepartamentoController {
             LOGGER.info("Buscando todos os departamentos.");
             List<Departamento> departamentos = departamentoService.listaDepartamentos();
             return ResponseEntity.ok(departamentos);
+        } catch (DepartamentoException de) {
+            return ResponseEntity.ok("Problema com banco de dados");
+        }
+    }
+
+    @GetMapping("por-codigo/{codigo}")
+    public ResponseEntity<?> buscaPorCodigo(@PathVariable("codigo") Integer codigo) {
+        try {
+            LOGGER.info("Buscando departamentos pelo código: " + codigo);
+            Departamento departamento = buscaPorId(codigo);
+            if(departamento != null) {
+                return ResponseEntity.ok(departamento);
+            } else {
+                return ResponseEntity.ok("Não foi possivel localizar o departamento através do código informado.");
+            }
         } catch (DepartamentoException de) {
             return ResponseEntity.ok("Problema com banco de dados");
         }
