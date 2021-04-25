@@ -1,6 +1,7 @@
 package br.com.asas.carrinhoCaminho.controller;
 
 import br.com.asas.carrinhoCaminho.exception.DepartamentoException;
+import br.com.asas.carrinhoCaminho.service.DepartamentoService;
 import br.com.asas.carrinhoCaminho.service.serviceImpl.DepartamentoServiceImpl;
 import br.com.asas.carrinhoCaminho.model.Departamento;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,9 +59,9 @@ public class DepartamentoController {
     public ResponseEntity<?> buscaPorCodigo(@PathVariable("codigo") Integer codigo) {
         try {
             LOGGER.info("Buscando departamentos pelo código: " + codigo);
-            Departamento departamento = buscaPorId(codigo);
-            if(departamento != null) {
-                return ResponseEntity.ok(departamento);
+            Optional<Departamento> departamento = departamentoService.buscaPorCodigo(codigo);
+            if(departamento.isPresent()) {
+                return ResponseEntity.ok(departamento.get());
             } else {
                 return ResponseEntity.ok("Não foi possivel localizar o departamento através do código informado.");
             }
@@ -69,11 +70,13 @@ public class DepartamentoController {
         }
     }
 
-    private Departamento buscaPorId(Integer codigo) throws DepartamentoException {
+    @DeleteMapping("excluir/{codigo}")
+    private boolean buscaPorId(@PathVariable("codigo") Integer codigo) throws DepartamentoException {
         Optional<Departamento> departamento = departamentoService.buscaPorCodigo(codigo);
         if(departamento.isPresent()) {
-            return departamento.get();
+            departamentoService.excluir(codigo);
+            return true;
         }
-        return null;
+        return false;
     }
 }
