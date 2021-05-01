@@ -79,4 +79,17 @@ public class DepartamentoController {
         }
         return false;
     }
+    
+    @GetMapping("busca-por-nome/{nome}")
+    public ResponseEntity<?> buscaPorNome(@PathVariable("nome") String nome) throws DepartamentoException {
+        try {
+            List<Departamento> departamentos = departamentoService.buscaPorNome(nome);
+            if (!departamentos.isEmpty()) {
+                return ResponseEntity.ok(departamentos);
+            }
+            return ResponseEntity.ok("Não foram encontrados departamentos.");
+        } catch (DepartamentoException de) {
+            return ResponseEntity.ok("Problema para pesquisar departamentos pelo nome.");
+        }
+    }
 }

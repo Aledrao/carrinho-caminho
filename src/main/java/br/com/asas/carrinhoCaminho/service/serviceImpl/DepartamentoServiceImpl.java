@@ -53,4 +53,14 @@ public class DepartamentoServiceImpl implements DepartamentoService {
             throw new DepartamentoException("Erro ao excluir departamento", e);
         }
     }
+
+    @Override
+    public List<Departamento> buscaPorNome(String busca) throws DepartamentoException {
+        try {
+            List<Departamento> departamentos = departamentoRepository.findByNomeStartingWith(busca);
+            return departamentos;
+        } catch (Exception e) {
+            throw new DepartamentoException("Erro ao pesquisar departamento por nome", e);
+        }
+    }
 }

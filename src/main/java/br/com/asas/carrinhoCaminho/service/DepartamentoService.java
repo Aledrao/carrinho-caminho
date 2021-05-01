@@ -10,8 +10,9 @@ import java.util.Optional;
 @Service
 public interface DepartamentoService {
 
-    public Departamento salvaOuAtualiza(Departamento departamento) throws DepartamentoException;
-    public List<Departamento> listaDepartamentos() throws DepartamentoException;
+    Departamento salvaOuAtualiza(Departamento departamento) throws DepartamentoException;
+    List<Departamento> listaDepartamentos() throws DepartamentoException;
     Optional<Departamento> buscaPorCodigo(Integer codigo) throws DepartamentoException;
     void excluir(Integer codigo) throws DepartamentoException;
+    List<Departamento> buscaPorNome(String busca) throws DepartamentoException;
 }
