@@ -8,6 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -23,7 +28,7 @@ public class DepartamentoController {
     private DepartamentoServiceImpl departamentoService;
 
     @PostMapping("salvar")
-    public ResponseEntity<?> salvar(@RequestBody Departamento departamento) {
+    public ResponseEntity<?> salvar(@Valid @RequestBody Departamento departamento) {
         try {
             LOGGER.info("Incluindo novo departamento : " + departamento.getNome());
             Departamento departamentoSalvo = departamentoService.salvaOuAtualiza(departamento);
@@ -34,7 +39,7 @@ public class DepartamentoController {
     }
 
     @PostMapping("atualizar")
-    public ResponseEntity<?> atualizar(@RequestBody Departamento departamento) {
+    public ResponseEntity<?> atualizar(@Valid @RequestBody Departamento departamento) {
         try {
             LOGGER.info("Atualizando  departamento : " + departamento.getNome());
             Departamento departamentoSalvo = departamentoService.salvaOuAtualiza(departamento);
@@ -55,7 +60,7 @@ public class DepartamentoController {
         }
     }
 
-    @GetMapping("por-codigo/{codigo}")
+    @GetMapping("busca-por-codigo/{codigo}")
     public ResponseEntity<?> buscaPorCodigo(@PathVariable("codigo") Integer codigo) {
         try {
             LOGGER.info("Buscando departamentos pelo código: " + codigo);
@@ -82,14 +87,10 @@ public class DepartamentoController {
     
     @GetMapping("busca-por-nome/{nome}")
     public ResponseEntity<?> buscaPorNome(@PathVariable("nome") String nome) throws DepartamentoException {
-        try {
             List<Departamento> departamentos = departamentoService.buscaPorNome(nome);
             if (!departamentos.isEmpty()) {
                 return ResponseEntity.ok(departamentos);
             }
             return ResponseEntity.ok("Não foram encontrados departamentos.");
-        } catch (DepartamentoException de) {
-            return ResponseEntity.ok("Problema para pesquisar departamentos pelo nome.");
-        }
     }
 }

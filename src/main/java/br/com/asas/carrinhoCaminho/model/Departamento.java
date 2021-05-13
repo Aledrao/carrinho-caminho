@@ -17,7 +17,7 @@ public class Departamento implements Serializable {
     private Integer codigo;
 
     @NotNull
-    @NotBlank
+    @NotBlank(message = "Informe o nome do departamento")
     @Column(name = "NOME", nullable = false)
     private String nome;
 
